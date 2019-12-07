@@ -22,7 +22,8 @@ class Register extends React.Component {
 	};
 
 	onSubmitSignIn = (event) => {
-		fetch('http://localhost:3000/register', {
+		event.preventDefault();
+		fetch('https://sleepy-bayou-95716.herokuapp.com/register', {
 			method: 'post',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({
@@ -33,18 +34,19 @@ class Register extends React.Component {
 		})
 			.then((response) => response.json())
 			.then((user) => {
-				if (user) {
+				if (user.id) {
 					this.props.loadUser(user);
 					this.props.onRouteChange('home');
 				}
-			});
+			})
+			.catch((err) => console.log(err));
 	};
 
 	render() {
 		return (
 			<article className="br3 ba b--black-10 mv4 w-100 w-50-m w-25 mw6 shadow-5 center">
 				<main className="pa4 black-80">
-					<div className="measure">
+					<form onSubmit={this.onSubmitSignIn} className="measure">
 						<fieldset id="sign_up" className="ba b--transparent ph0 mh0">
 							<legend className="f1 fw6 ph0 mh0">Register</legend>
 							<div className="mt3">
@@ -92,7 +94,7 @@ class Register extends React.Component {
 								value="Register"
 							/>
 						</div>
-					</div>
+					</form>
 				</main>
 			</article>
 		);
